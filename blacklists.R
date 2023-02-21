@@ -80,15 +80,25 @@ for (spec in names(species)) {
         blacklists$mito$symbol <- union(blacklists$mito$symbol, info$SYMBOL[is.mito])
         blacklists$mito$entrez <- union(blacklists$mito$entrez, info$ENTREZID[is.mito])
 
-        is.ribo <- grepl("^Rp[ls][0-9]", info$SYMBOL, ignore.case=TRUE) 
+        if (spec %in% c("9606", "10090")) {
+            is.ribo <- grepl("^Rp[ls][0-9]", info$SYMBOL, ignore.case=TRUE) 
+        } else if (spec == "6239") {
+            is.ribo <- grepl("^Rp[ls]-[0-9]", info$SYMBOL, ignore.case=TRUE) 
+        }
         blacklists$ribo$ensembl <- union(blacklists$ribo$ensembl, info$GENEID[is.ribo])
         blacklists$ribo$symbol <- union(blacklists$ribo$symbol, info$SYMBOL[is.ribo])
         blacklists$ribo$entrez <- union(blacklists$ribo$entrez, info$ENTREZID[is.ribo])
 
-        is.vdj <- grepl("^TR_", info$GENEBIOTYPE) | grepl("^IG_", info$GENEBIOTYPE)
-        blacklists$vdj$ensembl <- union(blacklists$vdj$ensembl, info$GENEID[is.vdj])
-        blacklists$vdj$symbol <- union(blacklists$vdj$symbol, info$SYMBOL[is.vdj])
-        blacklists$vdj$entrez <- union(blacklists$vdj$entrez, info$ENTREZID[is.vdj])
+        if (spec %in% c("9606", "10090")) {
+            is.vdj <- grepl("^TR_", info$GENEBIOTYPE) | grepl("^IG_", info$GENEBIOTYPE)
+            blacklists$vdj$ensembl <- union(blacklists$vdj$ensembl, info$GENEID[is.vdj])
+            blacklists$vdj$symbol <- union(blacklists$vdj$symbol, info$SYMBOL[is.vdj])
+            blacklists$vdj$entrez <- union(blacklists$vdj$entrez, info$ENTREZID[is.vdj])
+        }
+    }
+
+    if (spec %in% "6239") {
+        blacklists$vdj <- NULL
     }
 
     for (type in names(blacklists)) {
