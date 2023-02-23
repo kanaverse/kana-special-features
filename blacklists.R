@@ -136,7 +136,7 @@ species <- list(
         "AH100616",
         "AH104837",
         "AH109309"
-    )
+    ),
 
     # ahub$ah_id[grepl("Ensembl.*EnsDb.*Pan troglodytes", ahub$title)]
     `9598` = c(
@@ -167,7 +167,7 @@ ribo.profiles <- list(
     `10116` = "^Rp[ls][0-9]",
     `9541` = "^RP[LS][0-9]",
     `7227` = "^Rp[LS][0-9]",
-    `7955` = "^rpl[ls][0-9]",
+    `7955` = "^rp[ls][0-9]",
     `9598` = "^RP[LS][0-9]"
 )
 
@@ -223,7 +223,7 @@ for (spec in names(species)) {
         }
     }
 
-    if (spec %in% vdj.present) {
+    if (!(spec %in% vdj.present)) {
         blacklists$vdj <- NULL
     }
 
@@ -231,7 +231,7 @@ for (spec in names(species)) {
         for (x in names(blacklists[[type]])) {
             path <- paste0(spec, "-", type, "-", x, ".txt.gz")
             con <- gzfile(path, open="wb")
-            writeLines(con=con, sort(blacklists[[type]][[x]]))
+            writeLines(con=con, setdiff(sort(blacklists[[type]][[x]]), ""))
             close(con)
         }
     }
