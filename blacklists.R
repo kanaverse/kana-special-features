@@ -1,7 +1,5 @@
-# Generates special feature lists.
-
-library(AnnotationHub)
-ahub <- AnnotationHub()
+# Generates special feature lists across a range of Ensembl versions.
+# Assumes that the 'spec' variable is defined as a name of 'species'.
 
 species <- list(
     # ahub$ah_id[grepl("Ensembl.*EnsDb.*Mus musculus", ahub$title)]
@@ -193,7 +191,13 @@ vdj.present <- c(
 
 #########################################################
 
-for (spec in names(species)) {
+process.species <- function(spec) {
+    # We're downloading a lot of EnsDb's, so we try to just dump it locally
+    # rather than putting it in the user's cache. We also put it in a different
+    # directory for each species to avoid locking during parallelized downloads.
+    library(AnnotationHub)
+    ahub <- AnnotationHub(cache=file.path(getwd(), paste0("hub-", spec))) 
+
     ids <- species[[spec]]
     blacklists <- list(
         mito = list(ensembl = character(0), symbol = character(0), entrez = character(0)),
@@ -236,3 +240,7 @@ for (spec in names(species)) {
         }
     }
 }
+
+#for (spec in names(species)) {
+process.species(spec)
+#}

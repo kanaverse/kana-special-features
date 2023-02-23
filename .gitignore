@@ -1,1 +1,4 @@
 *.txt.gz
+*.err
+*.out
+hub-*

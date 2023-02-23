@@ -6,4 +6,6 @@ but we could also remove ribosomal proteins and immune repertoire gene fragments
 
 The [`blacklists.R`](blacklists.R) script will go through all available Ensembl releases on Bioconductor's [AnnotationHub](https://bioconductor.org/packages/AnnotationHub),
 pulling out "special" features for a bunch of different species.
-It will then generate a set of files that are available via the [Releases](https://github.com/kanaverse/kana-special-features/releases).
+(Call [`submit.sh`](submit.sh) to handle each species in parallel.)
+It will then generate a set of files that are available via on the [Releases page](https://github.com/kanaverse/kana-special-features/releases).
+
